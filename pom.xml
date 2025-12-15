@@ -110,15 +110,11 @@
                     <formats>
                         <format>HTML</format>
                     </formats>
+
+                    <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
+
                     <suppressionFiles>
-                        <suppressionFile>
-                            ${project.basedir}/dependency-check-suppressions.xml
-                        </suppressionFile>
+                        <suppressionFile>${project.basedir}/dependency-check-suppressions.xml</suppressionFile>
                     </suppressionFiles>
                 </configuration>
             </plugin>
-
-        </plugins>
-    </build>
-
-</project>
