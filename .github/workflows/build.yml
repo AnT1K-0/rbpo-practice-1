@@ -1,4 +1,4 @@
-name: Build, SAST, SCA, DAST
+name: PZ5 DAST (OWASP ZAP)
 
 on:
   pull_request:
@@ -15,7 +15,7 @@ jobs:
           java-version: "21"
           distribution: "temurin"
 
-      - name: Build project
+      - name: Build application
         run: mvn -B clean package -DskipTests=false
 
       - name: Upload JAR
@@ -43,13 +43,8 @@ jobs:
 
       - name: Run application
         run: |
-          java -jar target/*.jar > app.log 2>&1 &
+          java -jar target/*.jar &
           sleep 30
-          cat app.log
-
-      - name: Check health
-        run: |
-          curl -s http://localhost:8080/actuator/health || true
 
       - name: ZAP Baseline Scan
         run: |
@@ -73,4 +68,3 @@ jobs:
           path: |
             zap-baseline-report.html
             zap-api-report.html
-            app.log
