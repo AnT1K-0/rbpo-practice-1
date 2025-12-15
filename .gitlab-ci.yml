@@ -1,18 +1,18 @@
 workflow:
   rules:
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
 
 stages:
   - build
 
 build-job:
   stage: build
-  image: eclipse-temurin:21-jdk
+  image: maven:3.9.11-eclipse-temurin-21
   tags:
     - saas-linux-small-amd64
   script:
-    - chmod +x mvnw || true
-    - ./mvnw clean package -DskipTests=false || mvn clean package -DskipTests=false
+    - mvn -v
+    - mvn clean package -DskipTests=false
   artifacts:
     paths:
-      - "./target/*.jar"
+      - target/*.jar
