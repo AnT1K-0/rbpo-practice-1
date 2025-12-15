@@ -105,6 +105,7 @@ jobs:
           rules_file_name: zap-rules.tsv
           report: zap-baseline-report.html
           allow_issue_writing: false
+          artifact_name: ""
 
       - name: Upload baseline report
         if: always()
@@ -149,6 +150,7 @@ jobs:
           rules_file_name: zap-rules.tsv
           report: zap-api-report.html
           allow_issue_writing: false
+          artifact_name: ""
 
       - name: Upload api report
         if: always()
