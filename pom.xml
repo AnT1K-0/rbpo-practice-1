@@ -50,7 +50,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Специально уязвимая зависимость для SCA -->
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
@@ -110,9 +109,8 @@
                     <formats>
                         <format>HTML</format>
                     </formats>
-
                     <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
-
+                    <nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
                     <suppressionFiles>
                         <suppressionFile>${project.basedir}/dependency-check-suppressions.xml</suppressionFile>
                     </suppressionFiles>
