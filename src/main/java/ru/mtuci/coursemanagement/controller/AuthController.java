@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.mtuci.coursemanagement.model.User;
 import ru.mtuci.coursemanagement.service.UserService;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Optional;
 
 @Slf4j
@@ -19,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
     private final UserService users;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @GetMapping("/login")
     public String loginPage() {
@@ -33,8 +34,8 @@ public class AuthController {
         Optional<User> opt = users.findByUsername(username);
         if (opt.isPresent()) {
             User u = opt.get();
-            if (u.getPassword().equals(password)) {
-                log.info("User {} logged in with password {}", username, password);
+            if (passwordEncoder.matches(password, u.getPassword())) {
+                log.info("User {} logged in successfully", username);
                 HttpSession s = req.getSession(true);
                 s.setAttribute("username", username);
                 s.setAttribute("role", u.getRole());
@@ -56,7 +57,11 @@ public class AuthController {
     public String register(@RequestParam String username,
                            @RequestParam String password,
                            @RequestParam(required = false, defaultValue = "STUDENT") String role) {
-        users.save(new User(null, username, password, role));
+        if (!role.equals("STUDENT") && !role.equals("TEACHER")) {
+            role = "STUDENT";
+        }
+        String hashedPassword = passwordEncoder.encode(password);
+        users.save(new User(null, username, hashedPassword, role));
         return "redirect:/login";
     }
 }
