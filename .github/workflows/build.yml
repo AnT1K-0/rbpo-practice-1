@@ -21,7 +21,7 @@ jobs:
           java-version: '21'
 
       - name: Build application
-        run: mvn -B -DskipTests clean package
+        run: mvn clean package
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
